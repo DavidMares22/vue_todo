@@ -6,6 +6,9 @@ This app allows users to create tasks, mark them as complete and delete them.
 
 1. Vue.js/Vue Router
 
-## Screenshot
+## Screenshots
 
+<p align="center">
+  <img src="screenshots/app.JPG" alt="Index Page">
+</p>
 
