@@ -1,24 +1,14 @@
-# vue_todolist
+# Todo list App
 
-## Project setup
-```
-npm install
-```
+This app allows users to create tasks, mark them as complete and delete them.
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+## Tech Stack
 
-### Compiles and minifies for production
-```
-npm run build
-```
+1. Vue.js/Vue Router
 
-### Lints and fixes files
-```
-npm run lint
-```
+## Screenshot
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+<p align="center">
+  <img src="screenshots/app.jpg" alt="Index Page">
+</p>
+
