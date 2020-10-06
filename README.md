@@ -12,3 +12,6 @@ This app allows users to create tasks, mark them as complete and delete them.
   <img src="screenshots/app.JPG" alt="Index Page">
 </p>
 
+<p align="center">
+  <img src="screenshots/about.JPG" alt="About Page">
+</p>
