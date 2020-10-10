@@ -4,7 +4,7 @@
             <input type="checkbox" v-on:change="markComplete">
             {{item.title}}
             {{item.id}}
-            <!-- <button class="del" @click="$emit('del-todo', item.id)">X</button> -->
+           
             <router-link class="view" v-bind:to="'/detail/'+item.id" >View</router-link>
         </p>
     </div>
@@ -36,15 +36,7 @@ export default {
     text-decoration: line-through;
 }
 
-.del{
-    background: #ff0000;
-    color: #fff;
-    border: none;
-    padding: 5px 9px;
-    border-radius: 50%;
-    cursor: pointer;
-    float: right;
-}
+
 
 .view{
   background-color: #e7e7e7;

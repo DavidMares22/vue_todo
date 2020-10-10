@@ -2,7 +2,7 @@
   <div id="app">
     
     <AddTodo v-on:add-todo="addTodo" />
-    <Todos v-bind:tasks="todos" v-on:del-todo="deleteTodo" />
+    <Todos v-bind:tasks="todos" />
     
   </div>
 </template>
@@ -27,17 +27,12 @@ export default {
     }
   },
   methods:{
-    deleteTodo(id){
-      // this.todos = this.todos.filter(todo => todo.id != id);
-        axios.delete(`https://jsonplaceholder.typicode.com/todos/${id}`)// eslint-disable-next-line 
-        .then(res => this.todos = this.todos.filter(todo => todo.id !== id))
-        .catch(err => console.log(err));      
-    },
+    
     addTodo(newTodo){
       // this.todos = [... this.todos,newTodo];
       
       const { title, completed } = newTodo;
-      axios.post('https://jsonplaceholder.typicode.com/todos', {
+      axios.post('http://127.0.0.1:8085/api/v1/list/', {
         title,
         completed,
        
@@ -48,7 +43,7 @@ export default {
    
   },
     created() {
-      axios.get('https://jsonplaceholder.typicode.com/todos?_limit=5')
+      axios.get('http://127.0.0.1:8085/api/v1/list/')
         .then(res => this.todos = res.data)
         .catch(err => console.log(err));
 

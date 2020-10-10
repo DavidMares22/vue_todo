@@ -2,6 +2,7 @@
   <div class="details">
     <h1>Details</h1>
     <p>{{todo.title}}</p>
+     <button class="del" @click="deleteTodo(todo.id)">X</button>
   </div>
 </template>
 
@@ -17,8 +18,13 @@ export default {
         }
     },
     methods:{
+        deleteTodo(id){
+      // this.todos = this.todos.filter(todo => todo.id != id);
+        axios.delete(`http://127.0.0.1:8085/api/v1/detail/${id}`);// eslint-disable-next-line 
+           
+    },        
         fetchTask(id){
-             axios.get(`https://jsonplaceholder.typicode.com/todos/${id}`)// eslint-disable-next-line 
+             axios.get(`http://127.0.0.1:8085/api/v1/detail/${id}`)// eslint-disable-next-line 
         .then(res => this.todo =  res.data)
         .catch(err => console.log(err));   
         }
@@ -30,3 +36,16 @@ export default {
   
 }
 </script>
+
+<style scoped>
+
+.del{
+    background: #ff0000;
+    color: #fff;
+    border: none;
+    padding: 5px 9px;
+    border-radius: 50%;
+    cursor: pointer;
+    float: right;
+}
+</style>
