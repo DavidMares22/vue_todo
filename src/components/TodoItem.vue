@@ -4,7 +4,8 @@
             <input type="checkbox" v-on:change="markComplete">
             {{item.title}}
             {{item.id}}
-            <button class="del" @click="$emit('del-todo', item.id)">X</button>
+            <!-- <button class="del" @click="$emit('del-todo', item.id)">X</button> -->
+            <router-link class="view" v-bind:to="'/detail/'+item.id" >View</router-link>
         </p>
     </div>
      
@@ -43,6 +44,18 @@ export default {
     border-radius: 50%;
     cursor: pointer;
     float: right;
+}
+
+.view{
+  background-color: #e7e7e7;
+  border: none;
+  color: black;
+  padding: 5px 9px;
+  text-align: center;
+  text-decoration: none;
+  float: right;
+  font-size: 16px;
+  cursor: pointer;
 }
 
 </style>
