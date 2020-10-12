@@ -1,9 +1,9 @@
 <template>
-    <div class="todo-item" v-bind:class="{'is-complete':item.completed}">
+    <div class="todo-item" v-bind:class="{'is-complete':item.done}">
         <p>
-            <input type="checkbox" v-on:change="markComplete">
+            <input type="checkbox" v-on:change="markComplete(item)">
             {{item.title}}
-            {{item.id}}
+            {{item.done}}
            
             <router-link class="view" v-bind:to="'/detail/'+item.id" >View</router-link>
         </p>
@@ -12,12 +12,21 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
     name: "TodoItem",
     props:["item"],
     methods:{
         markComplete(){
-            this.item.completed = !this.item.completed;
+            this.item.done = !this.item.done;
+      
+      axios.put(`http://127.0.0.1:8085/api/v1/detail/${this.item.id}`, {
+        'title': this.item.title,
+        'done': this.item.done
+    
+       
+      })
+
         }
     }
      
