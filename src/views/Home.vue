@@ -3,7 +3,18 @@
     
     <AddTodo v-on:add-todo="addTodo" />
     <Todos v-bind:tasks="todos" />
-    
+  
+    <div class="center">
+      {{previous}} | {{current}} | {{next}}
+      <div class="pagination">
+        <a v-on:click="getPreviousPage">❮</a>
+        
+        <a v-on:click="getNextPage">❯</a>
+      </div>
+
+    </div>
+  
+
   </div>
 </template>
 
@@ -23,7 +34,10 @@ export default {
   },
   data(){
     return{
-      todos: []
+      todos: [],
+      next:1,
+      previous:1,
+      current:1,
     }
   },
   methods:{
@@ -40,11 +54,47 @@ export default {
         .then(res => this.todos = [...this.todos, res.data])
         .catch(err => console.log(err));
     },
+
+ getNextPage(){
+            
+            
+            let self = this ;
+            axios.get(`http://127.0.0.1:8085/api/v1/list/?page=${self.next}`)
+        .then(function(res) {
+          self.todos = res.data.results;
+          self.current = res.data.pages.current;
+          self.next = res.data.pages.current + 1;
+          self.previous = res.data.pages.current - 1;
+          
+      })
+      },
+ getPreviousPage(){
+            
+            
+            let self = this ;
+            axios.get(`http://127.0.0.1:8085/api/v1/list/?page=${self.previous}`)
+        .then(function(res) {
+          self.todos = res.data.results;
+          self.current = res.data.pages.current;
+          self.next = res.data.pages.current + 1;
+          self.previous = res.data.pages.current - 1;
+          
+      })
+     
+      },      
    
   },
     created() {
+      let self = this ;
       axios.get('http://127.0.0.1:8085/api/v1/list/')
-        .then(res => this.todos = res.data)
+        .then(function(res) {
+          self.todos = res.data.results;
+          self.current = res.data.pages.current;
+          self.next = res.data.pages.current + 1;
+          self.previous = res.data.pages.current - 1;
+          
+      })
+        // .then(res => this.todos = res.data.results )
         .catch(err => console.log(err));
 
         
@@ -78,4 +128,29 @@ body{
   background: rgb(12, 12, 12);
 }
 
+
+
+.pagination {
+  display: inline-block;
+  
+}
+.center {
+  
+  text-align: center;
+}
+
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: background-color .3s;
+  border: 1px solid #ddd;
+}
+
+.pagination a.active {
+  background-color: #4CAF50;
+  color: white;
+  border: 1px solid #4CAF50;
+}
 </style>
