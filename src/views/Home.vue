@@ -5,11 +5,13 @@
     <Todos v-bind:tasks="todos" />
   
     <div class="center">
-      {{previous}} | {{current}} | {{next}}
+      
       <div class="pagination">
-        <a v-on:click="getPreviousPage">❮</a>
-        
-        <a v-on:click="getNextPage">❯</a>
+        <a v-on:click="getPreviousPage"  v-if="has_previous">❮</a>
+        <span  v-if="has_previous">{{previous}}</span>
+        <span class="active">{{current}}</span>
+        <span  v-if="has_next">{{next}}</span>
+        <a v-on:click="getNextPage"  v-if="has_next">❯</a>
       </div>
 
     </div>
@@ -35,9 +37,11 @@ export default {
   data(){
     return{
       todos: [],
-      next:1,
-      previous:1,
+      has_next:'',
+      has_previous:'',
       current:1,
+      next:1,
+      previous:1
     }
   },
   methods:{
@@ -55,31 +59,46 @@ export default {
         .catch(err => console.log(err));
     },
 
- getNextPage(){
-            
-            
-            let self = this ;
-            axios.get(`http://127.0.0.1:8085/api/v1/list/?page=${self.next}`)
+    updatePages(){
+
+      if(this.has_next){
+        this.next = this.current+1;
+      }
+
+      if(this.has_previous){
+        this.previous = this.current-1;
+      }
+    },
+
+    getNextPage(){
+    
+        let self = this ;
+        axios.get(`http://127.0.0.1:8085/api/v1/list/?page=${self.next}`)
         .then(function(res) {
           self.todos = res.data.results;
           self.current = res.data.pages.current;
-          self.next = res.data.pages.current + 1;
-          self.previous = res.data.pages.current - 1;
+          self.has_next = res.data.pages.next;
+          self.has_previous = res.data.pages.previous;
           
+          self.updatePages();
       })
+      
       },
- getPreviousPage(){
+    getPreviousPage(){
             
             
-            let self = this ;
-            axios.get(`http://127.0.0.1:8085/api/v1/list/?page=${self.previous}`)
+        let self = this;
+        axios.get(`http://127.0.0.1:8085/api/v1/list/?page=${self.previous}`)
         .then(function(res) {
           self.todos = res.data.results;
           self.current = res.data.pages.current;
-          self.next = res.data.pages.current + 1;
-          self.previous = res.data.pages.current - 1;
+          self.has_next = res.data.pages.next;
+          self.has_previous = res.data.pages.previous;
+          self.updatePages();
           
       })
+
+      
      
       },      
    
@@ -90,11 +109,11 @@ export default {
         .then(function(res) {
           self.todos = res.data.results;
           self.current = res.data.pages.current;
-          self.next = res.data.pages.current + 1;
-          self.previous = res.data.pages.current - 1;
+          self.has_next = res.data.pages.next;
+          self.has_previous = res.data.pages.previous;
+          self.updatePages();
           
       })
-        // .then(res => this.todos = res.data.results )
         .catch(err => console.log(err));
 
         
@@ -139,7 +158,7 @@ body{
   text-align: center;
 }
 
-.pagination a {
+.pagination a, span {
   color: black;
   float: left;
   padding: 8px 16px;
@@ -148,7 +167,7 @@ body{
   border: 1px solid #ddd;
 }
 
-.pagination a.active {
+.pagination span.active {
   background-color: #4CAF50;
   color: white;
   border: 1px solid #4CAF50;
