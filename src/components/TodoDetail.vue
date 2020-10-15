@@ -9,8 +9,9 @@
   <form @submit.prevent="updateTodo(todo.id)">
 
     <label for="ftitle">Title</label>
+    <div class="error" v-if="error">{{error}}</div>
     <input type="text" id="ftitle" name="title" v-model="todo.title">
-
+    
      <input type="submit" value="Update">
 
   </form>
@@ -28,7 +29,8 @@ export default {
     name: "TodoDetail",
     data(){
         return{
-        todo: ''
+        todo: '',
+        error:''
         }
     },
     methods:{
@@ -47,16 +49,32 @@ export default {
         },
         
         updateTodo(id){
-    let self = this;
-      axios.put(`http://127.0.0.1:8085/api/v1/detail/${id}`, {
-        'title':self.todo.title,
-    
-       
-      }).then(function(){
-            self.$router.push({ name: 'Home' });
-        });
+          let self = this;
+          axios.put(`http://127.0.0.1:8085/api/v1/detail/${id}`, {
+            'title':self.todo.title,
         
-        }        
+          
+          }).then(function(){
+                self.$router.push({ name: 'Home' });
+          })
+          .catch(function(err){
+            
+          if(err.response.data){
+
+            // console.log(err.response.data.title);
+            self.error = err.response.data.title[0];
+          }
+
+          // if (err.response) {
+          //   console.log(err.response.data);
+          //   console.log(err.response.status);
+          //   console.log(err.response.headers);
+          // } else if (err.request) {        
+          //   console.log(err.request);
+          // }
+        });
+            
+          }        
     },
 
     created(){
@@ -107,5 +125,11 @@ input[type=text], select, textarea {
   margin-top: 6px; /* Add a top margin */
   margin-bottom: 16px; /* Bottom margin */
   
+}
+
+.error {
+ color: #ba3939;
+  background: #ffe0e0;
+  border: 1px solid #a33a3a;
 }
 </style>
